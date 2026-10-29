@@ -1,4 +1,4 @@
-import { isNil, tryCatchSync } from '@activepieces/core-utils';
+import { isNil } from '@activepieces/core-utils';
 import {
   ApEdition,
   CreditsBillableFeature,
@@ -11,8 +11,6 @@ import dayjs from 'dayjs';
 import { t } from 'i18next';
 
 import { formatUtils } from '@/lib/format-utils';
-
-import type { SelfServeTrial } from '../hooks/self-serve-trial-hooks';
 
 const DAILY_RESET_INTERVAL = 'day';
 
@@ -158,102 +156,6 @@ function formatTimeUntil(value: string): string {
   });
 }
 
-function daysLeftLabel(trial: SelfServeTrial): string {
-  if (trial.endsToday) {
-    return t('Ends today');
-  }
-  if (trial.ending) {
-    return t('Ends tomorrow');
-  }
-  return t('{count, plural, =1 {1 day left} other {# days left}}', {
-    count: trial.daysLeft,
-  });
-}
-
-function cardStatus(trial: SelfServeTrial): string {
-  if (trial.endsToday) {
-    return t('last day');
-  }
-  return t('{count, plural, =1 {1 day left} other {# days left}}', {
-    count: trial.ending ? 1 : trial.daysLeft,
-  });
-}
-
-function sidebarDetail(trial: SelfServeTrial): string {
-  const end = dayjs(trial.endsAt);
-  if (trial.endsToday) {
-    return t('Ends today at {time}', { time: end.format('h:mm A') });
-  }
-  if (trial.ending) {
-    return t('Ends tomorrow at {time}', { time: end.format('h:mm A') });
-  }
-  return t(
-    '{count, plural, =1 {1 day left} other {# days left}}, ends {date}',
-    { count: trial.daysLeft, date: end.format('MMM D') },
-  );
-}
-
-function endsSentence(trial: SelfServeTrial): string {
-  const end = dayjs(trial.endsAt);
-  const time = end.format('h:mm A');
-  if (trial.endsToday) {
-    return t('Your Enterprise plan trial ends today at {time}.', { time });
-  }
-  if (trial.ending) {
-    return t('Your Enterprise plan trial ends tomorrow at {time}.', { time });
-  }
-  return t('Your Enterprise plan trial ends on {date}.', {
-    date: end.format('MMM D'),
-  });
-}
-
-function details(trial: SelfServeTrial): string {
-  const end = dayjs(trial.endsAt);
-  const plan = trial.basePlanName;
-  if (trial.endsToday) {
-    return t(
-      'Every Enterprise plan feature is on until today at {time}. Then you are back on the {plan} plan. Your credits are not affected.',
-      { time: end.format('h:mm A'), plan },
-    );
-  }
-  if (trial.ending) {
-    return t(
-      'Every Enterprise plan feature is on until tomorrow at {time}. Then you are back on the {plan} plan. Your credits are not affected.',
-      { time: end.format('h:mm A'), plan },
-    );
-  }
-  return t(
-    'Every Enterprise plan feature is on until {date}. Then you are back on the {plan} plan. Your credits are not affected.',
-    { date: end.format('MMM D'), plan },
-  );
-}
-
-function focusDialogItself(event: Event): void {
-  event.preventDefault();
-  if (event.currentTarget instanceof HTMLElement) {
-    event.currentTarget.focus();
-  }
-}
-
-function readLocalStorageFlag(key: string): boolean {
-  const { data } = tryCatchSync(() => window.localStorage.getItem(key));
-  return data === 'true';
-}
-
-function setLocalStorageFlag(key: string): void {
-  tryCatchSync(() => window.localStorage.setItem(key, 'true'));
-}
-
-function trialStorageId({
-  platformId,
-  userId,
-  endsAt,
-}: TrialStorageIdParams): string {
-  return `${platformId}-${userId ?? 'unknown'}-${
-    endsAt?.toISOString() ?? 'unknown'
-  }`;
-}
-
 function reservedSeats({
   users,
   invitations,
@@ -308,21 +210,6 @@ export const billingUtils = {
 };
 
 export const BILLING_DATE_FORMAT = 'MMM D, YYYY';
-
-export const selfServeTrialCopy = {
-  daysLeftLabel,
-  sidebarDetail,
-  cardStatus,
-  endsSentence,
-  details,
-};
-
-export const selfServeTrialUi = {
-  focusDialogItself,
-  readLocalStorageFlag,
-  setLocalStorageFlag,
-  trialStorageId,
-};
 
 export const enterpriseDocs = {
   switchToEnterpriseUrl:
@@ -386,10 +273,4 @@ export type CreditsResetParams = {
 export type CreditsResetLine = {
   label: string;
   value: string;
-};
-
-type TrialStorageIdParams = {
-  platformId: string;
-  userId: string | null;
-  endsAt: Date | null;
 };

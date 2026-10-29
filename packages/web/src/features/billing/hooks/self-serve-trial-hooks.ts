@@ -345,6 +345,30 @@ export const selfServeTrialHooks = {
       basePlanName,
     };
   },
+  useSeatGrace: (): SeatGrace | null => {
+    const { platform } = platformHooks.useCurrentPlatform();
+    const { embedState } = useEmbedding();
+    const isPlatformAdmin = useIsPlatformAdmin();
+    const endsAt = platform.selfServeTrial?.seatGraceEndsAt;
+    const seats = platform.plan.usersLimit;
+    useTrialClock(endsAt);
+    if (embedState.isEmbedded || isNil(endsAt) || isNil(seats)) {
+      return null;
+    }
+    const timing = selfServeTrialTime.activeTrialTiming({
+      startedAt: null,
+      endsAt,
+      now: Date.now(),
+    });
+    return {
+      endsAt: timing.endsAt,
+      daysLeft: timing.daysLeft,
+      endsToday: timing.endsToday,
+      ending: timing.ending,
+      seats,
+      isPlatformAdmin,
+    };
+  },
 };
 
 export const SELF_SERVE_TRIAL_DAYS = TRIAL_DAYS;
@@ -386,4 +410,13 @@ export type LockedFeature = {
     postTrialActivationCallback: () => Promise<unknown> | void,
   ) => void;
   showLockedDialog: () => void;
+};
+
+export type SeatGrace = {
+  endsAt: Date;
+  daysLeft: number;
+  endsToday: boolean;
+  ending: boolean;
+  seats: number;
+  isPlatformAdmin: boolean;
 };

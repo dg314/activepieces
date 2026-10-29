@@ -27,13 +27,12 @@ import {
   SELF_SERVE_TRIAL_DAYS,
 } from '../hooks/self-serve-trial-hooks';
 import { useCreditsUsage } from '../hooks/use-credits-usage';
-import {
-  billingUtils,
-  selfServeTrialCopy,
-  enterpriseMotion,
-} from '../utils/billing-utils';
+import { billingUtils, enterpriseMotion } from '../utils/billing-utils';
 import { FeatureKey } from '../utils/platform-features';
-import { selfServeTrialTime } from '../utils/self-serve-trial-utils';
+import {
+  selfServeTrialCopy,
+  selfServeTrialTime,
+} from '../utils/self-serve-trial-utils';
 
 export const CurrentSubscriptionCard = ({
   info,

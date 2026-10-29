@@ -17,7 +17,7 @@ import {
   useActionWhenLocked,
 } from '../hooks/self-serve-trial-hooks';
 import { platformFeatures, FeatureKey } from '../utils/platform-features';
-import { selfServeTrialFeatures } from '../utils/self-serve-trial-utils';
+import { selfServeTrialFeatures } from '../utils/self-serve-trial-features';
 
 import { SelfServeTrialSalesLink } from './current-subscription-card';
 import { PlanBadge, SelfServeTrialLockedActions } from './locked-feature';

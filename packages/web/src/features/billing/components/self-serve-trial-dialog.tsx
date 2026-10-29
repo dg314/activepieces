@@ -16,9 +16,10 @@ import {
   SELF_SERVE_TRIAL_DAYS,
   selfServeTrialHooks,
 } from '../hooks/self-serve-trial-hooks';
-import { enterpriseMotion, selfServeTrialUi } from '../utils/billing-utils';
+import { enterpriseMotion } from '../utils/billing-utils';
 import { FeatureKey } from '../utils/platform-features';
-import { selfServeTrialFeatures } from '../utils/self-serve-trial-utils';
+import { selfServeTrialFeatures } from '../utils/self-serve-trial-features';
+import { selfServeTrialUi } from '../utils/self-serve-trial-utils';
 
 import { SelfServeTrialSalesLink } from './current-subscription-card';
 import {

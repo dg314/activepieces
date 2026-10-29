@@ -32,7 +32,7 @@ import {
 import { useUpgradeClick } from '../hooks/use-upgrade-click';
 import { enterpriseDocs, enterpriseMotion } from '../utils/billing-utils';
 import { platformFeatures, FeatureKey } from '../utils/platform-features';
-import { selfServeTrialFeatures } from '../utils/self-serve-trial-utils';
+import { selfServeTrialFeatures } from '../utils/self-serve-trial-features';
 
 import { SelfServeTrialSalesLink } from './current-subscription-card';
 
